@@ -191,7 +191,6 @@ runSoft(){
 		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "run " $ELASTICSEARCH " ..."
 		cd $INSTALL_DIR$ELASTICSEARCH && nohup bin/elasticsearch & 
 	else
-		echo 
 		echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- elasticsearch is running ...  PID: " $elasticPs 
 	fi
 
@@ -207,7 +206,14 @@ runSoft(){
 	fi
 	
 
-	#...
+	#run filebeat
+	filebeatPs=`ps -ef | grep "filebeat" | grep -v 'grep' | awk '{print $2}' | head -n 1`
+	if [[ -z $filebeatPs ]]; then
+		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "run " $FILEBEAT_DIR " ..."
+		cd $INSTALL_DIR$FILEBEAT_DIR && nohup ./filebeat & 
+	else
+		echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- filebeat is running ...  PID: " $filebeatPs 
+	fi
 	
 
 }
