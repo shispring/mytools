@@ -55,3 +55,14 @@ brew install ctop
 brew install lazydocker
 #视频工具
 brew install ffmpeg
+#语法高亮
+brew install zsh-syntax-highlighting
+#自动补全
+brew install zsh-autosuggestions
+#需要在~/.zshrc添加以下内容
+#source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
+
+
