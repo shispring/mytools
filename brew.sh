@@ -32,7 +32,26 @@ brew install php
 brew install php-cs-fixer
 brew install tree
 brew install mycli
+#文档内容搜索工具
 brew install the_silver_searcher
 brew install autojump
 brew install fzf
+#比cat好用的浏览工具
+brew install bat
+brew install jq
+#查找
+brew install fd
+#查找速度比grep快，命令：rg xxx
+brew install ripgrep
+#http请求工具，替代curl
+brew install httpie
+#多线程下载工具，替换wget、curl
+brew install axel
+#监控
+brew install htop
+brew search glances
+#docker监控
+brew install ctop
+brew install lazydocker
+#视频工具
 brew install ffmpeg
