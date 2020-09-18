@@ -47,6 +47,7 @@ brew install ripgrep
 brew install httpie
 #多线程下载工具，替换wget、curl
 brew install axel
+brew install tldr
 #监控
 brew install htop
 brew search glances

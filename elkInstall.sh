@@ -11,7 +11,7 @@
 SOFT_DIR="/Users/jpshi/bigdata/elasticStack/soft/"
 if [[ ! -d $SOFT_DIR ]]; then
 	#statements
-	echo "mkdir -p :" $SOFT_DIR
+	output "mkdir -p :" $SOFT_DIR
 	mkdir -p $SOFT_DIR
 fi
 
@@ -19,7 +19,7 @@ fi
 INSTALL_DIR="/Users/jpshi/bigdata/elasticStack/install/"
 if [[ ! -d $INSTALL_DIR ]]; then
 	#statements
-	echo "mkdir -p :" $INSTALL_DIR
+	output "mkdir -p :" $INSTALL_DIR
 	mkdir -p $INSTALL_DIR
 fi
 
@@ -51,62 +51,82 @@ FILEBEAT_BASE_URL="https://artifacts.elastic.co/downloads/beats/filebeat/"
 PACKETBEAT_BASE_URL="https://artifacts.elastic.co/downloads/beats/packetbeat/" 
 LOGSTASH_BASE_URL="https://artifacts.elastic.co/downloads/logstash/" 
 
-
+#output info
+outPut(){
+	echo -e "`date '+%Y-%m-%d %H:%M:%S'` " $@
+}
 
 #download software 
 downLoadSoft(){
 
 	#cd download path
-	echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "--- 检查软件是否下载 ... " 
+	content="--- 检查软件是否下载 ... "	
+	outPut $content
+
 	cd $SOFT_DIR
 
 	#es
 	if [[ ! -f $ELASTICSEARCH_FILE ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $ELASTICSEARCH_FILE " is not exists , downloading ..."
-		wget -c  $ELASTICSEARCH_BASE_URL$ELASTICSEARCH_FILE
-		echo "download soft end: " $ELASTICSEARCH_FILE
+		content="--- $ELASTICSEARCH_FILE is not exists , downloading ..."	
+		outPut $content
+		wget -c $ELASTICSEARCH_BASE_URL$ELASTICSEARCH_FILE
+		content="download soft end: $ELASTICSEARCH_FILE "
+		outPut $content
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $ELASTICSEARCH_FILE " already exists ."
+		content="--- $ELASTICSEARCH_FILE already exists ."	
+		outPut $content
 	fi
 	
 
 	#kibana
 	if [[ ! -f $KIBANA_FILE ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $KIBANA_FILE " is not exists , downloading ..."
-		wget -c  $KIBANA_BASE_URL$KIBANA_FILE 
-		echo "download soft end: " $KIBANA_FILE
+		content="--- $KIBANA_FILE is not exists , downloading ..."	
+		outPut $content
+		wget -c $KIBANA_BASE_URL$KIBANA_FILE 
+		content="download soft end: $KIBANA_FILE "
+		outPut $content
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $KIBANA_FILE " already exists ."
+		content="--- $KIBANA_FILE already exists ."	
+		outPut $content
 	fi
 	
 
 	#filebeat
 	if [[ ! -f $FILEBEAT_FILE ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $KIBANA_FILE " is not exists , downloading ..."
-		wget -c  $FILEBEAT_BASE_URL$FILEBEAT_FILE 
-		cho "download soft end: " $FILEBEAT_FILE
+		content="--- $FILEBEAT_FILE is not exists , downloading ..."	
+		outPut $content
+		wget -c $FILEBEAT_BASE_URL$FILEBEAT_FILE 
+		content="download soft end: $FILEBEAT_FILE "
+		outPut $content
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $FILEBEAT_FILE " already exists ."
+		content="--- $FILEBEAT_FILE already exists ."	
+		outPut $content
 	fi
 	
 
 	#packetbeat
 	if [[ ! -f $PACKETBEAT_FILE ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $PACKETBEAT_FILE " is not exists , downloading ..."
+		content="--- $PACKETBEAT_FILE is not exists , downloading ..."	
+		outPut $content
 		wget -c $PACKETBEAT_BASE_URL$PACKETBEAT_FILE 
-		echo "download soft end: " $PACKETBEAT_FILE 
+		content="download soft end: $PACKETBEAT_FILE "
+		outPut $content
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $PACKETBEAT_FILE " already exists ."	
+		content="--- $PACKETBEAT_FILE already exists ."	
+		outPut $content
 	fi
 	
 
 	#logstash
 	if [[ ! -f $LOGSTASH_FILE ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $LOGSTASH_FILE " is not exists , downloading ..."
+		content="--- $LOGSTASH_FILE is not exists , downloading ..."	
+		outPut $content
 		wget -c $LOGSTASH_BASE_URL$LOGSTASH_FILE
-		echo "download soft end: " $LOGSTASH_FILE
+		content="download soft end: $LOGSTASH_FILE "
+		outPut $content
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $LOGSTASH_FILE " already exists ."	
+		content="--- $LOGSTASH_FILE already exists ."	
+		outPut $content
 	fi
 	
 
@@ -115,66 +135,81 @@ downLoadSoft(){
 
 tarzxfSoft(){
 	#cd download path
-	echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- 检查软件是否解压："
+	outPut "--- 检查软件是否解压："
 	cd $SOFT_DIR
 
 	#解压ELASTICSEARCH
-	if [[  -f $ELASTICSEARCH_FILE ]]; then
+	if [[ -f $ELASTICSEARCH_FILE ]]; then
 		if [[ ! -d $INSTALL_DIR$ELASTICSEARCH ]]; then
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $ELASTICSEARCH_FILE " start ... "
-			tar zxf $ELASTICSEARCH_FILE  -C $INSTALL_DIR
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $ELASTICSEARCH_FILE " end ... "
+			content="--- tar zxf $ELASTICSEARCH_FILE start ... "
+			outPut $content
+			tar zxf $ELASTICSEARCH_FILE -C $INSTALL_DIR
+			content="--- tar zxf $ELASTICSEARCH_FILE end ... "
+			outPut $content
 		else
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $ELASTICSEARCH "has already exists."
+			content="--- $ELASTICSEARCH has already exists."
+			outPut $content
 		fi
 	fi
 	
 
 	#解压KIBANA
-	if [[  -f $KIBANA_FILE ]]; then
+	if [[ -f $KIBANA_FILE ]]; then
 		if [[ ! -d $INSTALL_DIR$KIBANA_DIR ]]; then
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $KIBANA_FILE " start ... "
-			tar zxf $KIBANA_FILE  -C $INSTALL_DIR
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $KIBANA_FILE " end ... "
+			content="--- tar zxf $KIBANA_FILE start ... "
+			outPut $content
+			tar zxf $KIBANA_FILE -C $INSTALL_DIR
+			content="--- tar zxf $KIBANA_FILE end ... "
+			outPut $content
 		else
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $KIBANA_DIR "has already exists."
+			content="--- $KIBANA_DIR has already exists."
+			outPut $content
 		fi
 	fi
 	
 
 	#解压FILEBEAT
-	if [[  -f $FILEBEAT_FILE ]]; then
+	if [[ -f $FILEBEAT_FILE ]]; then
 		if [[ ! -d $INSTALL_DIR$FILEBEAT_DIR ]]; then
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $FILEBEAT_FILE " start ... "
-			tar zxf $FILEBEAT_FILE  -C $INSTALL_DIR
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $FILEBEAT_FILE " end ... "
+			content="--- tar zxf $FILEBEAT_FILE start ... "
+			outPut $content
+			tar zxf $FILEBEAT_FILE -C $INSTALL_DIR
+			content="--- tar zxf $FILEBEAT_FILE end ... "
+			outPut $content
 		else
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $FILEBEAT_DIR "has already exists."
+			content="--- $FILEBEAT_DIR has already exists."
+			outPut $content
 		fi
 
 	fi
 
 
 	#解压PACKETBEAT
-	if [[  -f $PACKETBEAT_FILE ]]; then
+	if [[ -f $PACKETBEAT_FILE ]]; then
 		if [[ ! -d $INSTALL_DIR$PACKETBEAT_DIR ]]; then
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $PACKETBEAT_FILE " start ... "
-			tar zxf $PACKETBEAT_FILE  -C $INSTALL_DIR
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $PACKETBEAT_FILE " end ... "
+			content="--- tar zxf $PACKETBEAT_FILE start ... "
+			outPut $content
+			tar zxf $PACKETBEAT_FILE -C $INSTALL_DIR
+			content="--- tar zxf $PACKETBEAT_FILE end ... "
+			outPut $content
 		else
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $PACKETBEAT_DIR "has already exists."
+			content="--- $PACKETBEAT_DIR has already exists."
+			outPut $content
 		fi
 	fi
 	
 
 	#解压LOGSTASH
-	if [[  -f $LOGSTASH_FILE ]]; then
+	if [[ -f $LOGSTASH_FILE ]]; then
 		if [[ ! -d $INSTALL_DIR$LOGSTASH ]]; then
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $LOGSTASH_FILE " start ... "
-			tar zxf $LOGSTASH_FILE  -C $INSTALL_DIR
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "tar zxf " $LOGSTASH_FILE " end ... "
+			content="--- tar zxf $LOGSTASH_FILE start ... "
+			outPut $content
+			tar zxf $LOGSTASH_FILE -C $INSTALL_DIR
+			content="--- tar zxf $LOGSTASH_FILE end ... "
+			outPut $content
 		else
-			echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" $LOGSTASH "has already exists."
+			content="--- $LOGSTASH has already exists."
+			outPut $content
 		fi
 	fi
 	
@@ -183,43 +218,94 @@ tarzxfSoft(){
 }
 
 
-runSoft(){
-	#run es
+start(){
+	#start es
 	#查看进程是否存在
 	elasticPs=`ps -ef | grep "elastic" | grep -v 'grep' | awk '{print $2}' | head -n 1`
 	if [[ -z $elasticPs ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "run " $ELASTICSEARCH " ..."
+		content="--- start $ELASTICSEARCH ..."
+		outPut $content
 		cd $INSTALL_DIR$ELASTICSEARCH && nohup bin/elasticsearch & 
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- elasticsearch is running ...  PID: " $elasticPs 
+		content="--- es is running ... PID: " $elasticPs 
+		outPut $content
 	fi
 
 	
-	#run kibana
+	#start kibana
 	#查看进程是否存在
-	kibanaPs=`netstat -antl | grep 5601`
+	# kibanaPs=`netstat -antl | grep 5601`
+	kibanaPs=`ps -ef | grep "node/bin/node" | grep -v 'grep' | awk '{print $2}' | head -n 1`
 	if [[ -z $kibanaPs ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "run " $KIBANA_DIR " ..."
-		cd  $INSTALL_DIR$KIBANA_DIR &&  nohup bin/kibana & 
+		content="--- start $KIBANA_DIR ..."
+		outPut $content
+		cd $INSTALL_DIR$KIBANA_DIR && nohup bin/kibana & 
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- kibana is running ..." 
+		content="--- kibana is running ... PID: " $kibanaPs 
+		outPut $content
 	fi
 	
 
-	#run filebeat
+	#start filebeat
 	filebeatPs=`ps -ef | grep "filebeat" | grep -v 'grep' | awk '{print $2}' | head -n 1`
 	if [[ -z $filebeatPs ]]; then
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'`" "---" "run " $FILEBEAT_DIR " ..."
+		content="--- start $FILEBEAT_DIR ..."
+		outPut $content
 		cd $INSTALL_DIR$FILEBEAT_DIR && nohup ./filebeat & 
 	else
-		echo -e "`date '+%Y-%m-%d %H:%M:%S'` --- filebeat is running ...  PID: " $filebeatPs 
+		content="--- filebeat is running ... PID: " $filebeatPs 
+		outPut $content
 	fi
 	
 
 }
 
+
+stop(){
+
+	#stop es
+	esPid=`ps -ef | grep "elastic" | grep -v 'grep' | awk '{print $2}' | head -n 1`
+	if [[ $esPid ]]; then
+		#statements
+		content="--- kill es process ..."
+		outPut $content
+		kill -9 $esPid
+	else
+		content="--- es already stoped ..."
+		outPut $content
+	fi
+
+	#stop filebeat
+	filebeatPid=`ps -ef | grep "filebeat" | grep -v 'grep' | awk '{print $2}' | head -n 1`
+	if [[ $filebeatPid ]]; then
+		#statements
+		content="--- kill filebeat process ..."
+		outPut $content
+		kill -9 $filebeatPid
+	else
+		content="--- filebeat already stoped ..."
+		outPut $content
+	fi
+
+	#stop kibana
+	kibanaPid=`ps -ef | grep "node/bin/node" | grep -v 'grep' | awk '{print $2}' | head -n 1`
+	if [[ $kibanaPid ]]; then
+		#statements
+		content="--- kill kibana process ..."
+		outPut $content
+		kill -9 $kibanaPid
+	else
+		content="--- kibana already stoped ..."
+		outPut $content
+	fi
+	
+}
+
+
+
 if [[ -z $1 ]]; then
-	echo -e "`date '+%Y-%m-%d %H:%M:%S'`" " --- params is empty. please input 'down' or 'tar' , run again!!!  "
+	content="--- params is empty. please input 'down' or 'tar' , run again!!! "
+	outPut $content
 	exit
 elif [[ $1 == "check" ]]; then
 	downLoadSoft
@@ -231,8 +317,11 @@ elif [[ $1 == "down" ]]; then
 elif [[ $1 == "tar" ]]; then
 	tarzxfSoft
 	exit
-elif [[ $1 == "run" ]]; then
-	runSoft
+elif [[ $1 == "start" ]]; then
+	start
+	exit
+elif [[ $1 == "stop" ]]; then
+	stop
 	exit
 fi
 
