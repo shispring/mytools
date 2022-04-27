@@ -1,0 +1,51 @@
+#!/usr/bin/expect
+#############################################
+#此脚本可以执行从原始机器一键跳转线上机器
+#使用方法：
+#1、chmod +x jump.exp
+#2、可在.bash_profile 定义脚本别名 alias jump='xxxx/jump.exp'
+#3、登录机器 jump {hostname}
+#############################################
+
+
+# 设置超时时间，可以设置 -1 永不超时
+set timeout 5
+
+# 基本的服务器信息,跳板机ip，用户名，密码
+set port 22
+set originIp xxx
+set user xxx
+set password xxx
+
+# 这一行是设置一个变量的意思，变量名随便起，尽量有意义，后面表示的是传入的参数，0 表示第一个参数，后面会用到。
+set hostname [lindex $argv 0]
+
+if { $argc < 1 } {
+	puts "please input: jump {hostname} "
+	exit
+}
+
+# 关闭mac层连接的标准输出
+log_user 0
+
+# spawn 是 expect 环境的内部命令，它主要的功能是给 ssh 运行进程加个壳，用来传递交互指令。
+spawn ssh -p $port $user@$originIp
+
+# expect 也是 expect 环境的一个内部命令，用来判断上一个指令输入之后的得到输出结果是否包含 "" 双引号里的字符串，-re 表示通过正则来匹配。
+# 如果是第一次登录，会出现 "yes/no" 的字符串，就发送（send）指令 "yes\r"，然后继续（exp_continue）。
+expect {
+ 	"*yes/no" {    send "yes\r"; exp_continue }
+ 	"*password:*" {   send "$password\r;"}
+}
+# 关闭跳板机的标准输出,此时可以输入ssh xxx@xxx
+log_user 0
+
+expect "@" { send "ssh -p $port $user@$hostname\r"}
+expect {
+	"*yes/no" {    send "yes\r"; exp_continue }
+	"*password*" {   send "$password\r;"}
+}
+
+# interact：执行完成后保持交互状态，把控制权交给控制台。
+interact
+
